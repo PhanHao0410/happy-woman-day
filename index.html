@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>8/3 for My Family</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
       body {
         margin: 0;
@@ -17,13 +20,15 @@
       }
 
       .card {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         padding: 40px;
         border-radius: 20px;
         text-align: center;
         max-width: 500px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        animation: fadeIn 2s ease;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 1.5s ease;
+        position: relative;
+        z-index: 10;
       }
 
       h1 {
@@ -32,13 +37,19 @@
 
       .btn {
         margin-top: 20px;
-        padding: 12px 24px;
+        padding: 12px 26px;
         border: none;
         border-radius: 30px;
         cursor: pointer;
         font-size: 16px;
         background: #ff4d6d;
         color: white;
+        transition: all 0.25s;
+      }
+
+      .btn:hover {
+        transform: scale(1.07);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
 
       .message {
@@ -61,10 +72,45 @@
         }
       }
 
+      .sparkle {
+        position: absolute;
+        font-size: 18px;
+        animation: sparkle 1.5s infinite;
+      }
+
+      @keyframes sparkle {
+        0% {
+          opacity: 0;
+          transform: scale(0.6);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.6);
+        }
+      }
+
+      .flower {
+        position: absolute;
+        top: -20px;
+        font-size: 20px;
+        animation: fall linear forwards;
+      }
+
+      @keyframes fall {
+        to {
+          transform: translateY(110vh);
+          opacity: 0;
+        }
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(30px);
         }
         to {
           opacity: 1;
@@ -73,6 +119,7 @@
       }
     </style>
   </head>
+
   <body>
     <div class="card">
       <h1>Chúc mừng 8/3 ❤️</h1>
@@ -105,6 +152,12 @@
         document.getElementById("msg").style.display = "block";
         document.getElementById("openBtn").style.display = "none";
         document.getElementById("backBtn").style.display = "inline-block";
+
+        confetti({
+          particleCount: 180,
+          spread: 120,
+          origin: { y: 0.6 },
+        });
       }
 
       function hideMessage() {
@@ -123,13 +176,40 @@
 
         document.body.appendChild(heart);
 
-        setTimeout(() => {
-          heart.remove();
-        }, 6000);
+        setTimeout(() => heart.remove(), 6000);
       }
 
       setInterval(createHeart, 300);
+
+      function createSparkle() {
+        const star = document.createElement("div");
+        star.className = "sparkle";
+        star.innerText = "✨";
+
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = Math.random() * 100 + "vh";
+
+        document.body.appendChild(star);
+
+        setTimeout(() => star.remove(), 2000);
+      }
+
+      setInterval(createSparkle, 400);
+
+      function createFlower() {
+        const flower = document.createElement("div");
+        flower.className = "flower";
+        flower.innerText = "🌸";
+
+        flower.style.left = Math.random() * 100 + "vw";
+        flower.style.animationDuration = Math.random() * 4 + 4 + "s";
+
+        document.body.appendChild(flower);
+
+        setTimeout(() => flower.remove(), 8000);
+      }
+
+      setInterval(createFlower, 800);
     </script>
   </body>
 </html>
-
